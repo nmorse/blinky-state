@@ -8,8 +8,8 @@ async def toggle_timer(rate):
         statemachine.enqueue("toggle")
 
 async def main():
-    async_statemachine = asyncio.create_task(statemachine.xstate_interpreter(blinky_states))
-    async_timer_message = asyncio.create_task(toggle_timer(0.5))
-    await asyncio.gather(async_statemachine, async_timer_message)
+    toggle_timer_loop = asyncio.create_task(toggle_timer(0.5))
+    statemachine_loop = asyncio.create_task(statemachine.xstate_interpreter(blinky_states))
+    await asyncio.gather(toggle_timer_loop, statemachine_loop)
 
 asyncio.run(main())
